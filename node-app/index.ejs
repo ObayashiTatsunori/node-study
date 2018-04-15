@@ -1,25 +1,46 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title> <%=title %> </title>
-<link type="text/css" href="./style.css" rel="stylesheet">
-</head>
-<body>
-  <head>
-    <h1><%=title %></h1>
-  </head>
-  <div role="main">
-  <p>
-    <%=   content %>
-  </p>
-  <p><table>
-    <% for(var key in data){ %>
-      <%- include('data_item',{key:key,val:[data[key]]}) %>
-      <% } %>
-  </table>
 
-  </p>
-</div>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>
+        <%=title %>
+    </title>
+    <link type="text/css" href="./style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <head>
+        <h1>
+            <%=title %>
+        </h1>
+    </head>
+    <div role="main">
+        <p>
+            <%=   content %>
+        </p>
+        <p>
+            <table>
+                <tr>
+                    <th>伝言です！</th>
+                </tr>
+                <tr>
+                    <th>
+                        <%=data.msg %>
+                    </th>
+                </tr>
+            </table>
+        </p>
+        <p>your last message:
+            <%= cookie_data %>
+        </p>
+        <p>
+            <form method="post" action="/">
+                MESSAGE <input type="text" name="msg">
+                <input type="submit" value="送信">
+        </p>
+    </div>
 </body>
+
 </html>
