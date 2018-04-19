@@ -13,7 +13,7 @@
                 location.href = "./login";
             }
             document.querySelector('#id').textContent = 'ID:' + id;
-            document.querySelector("id_input").value = id;
+            document.querySelector("#id_input").value = id;
         }
     </script>
 </head>
@@ -35,7 +35,7 @@
         <p>
             <table style="width: 85%">
                 <% for(var i in data) { %>
-                    <%- incude('data_item',{val:data[i]}) %>
+                    <%- include('data_item',{val:data[i]}) %>
                         <% } %>
             </table>
         </p>
