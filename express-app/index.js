@@ -8,29 +8,20 @@ app.use(express.static('public'));
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
-
+var data = {
+    'Taro': 'taro@yamada',
+    'Hanako': 'hanako@flower',
+    'Sachiko': 'sachiko@happy',
+    'Ichiro': 'ichiro@baseball',
+};
 // トップページ
 app.get('/', (req, res) => {
-        var msg = 'This is Express Page!<br>' +
-            'これは、スタイルシートを利用した例です。';
-        var url = '/other?name=taro&pass=yamada';
-        // index.ejsをレンダリングする
-        res.render('index.ejs', {
-            title: 'Index',
-            content: msg,
-            link: { href: url, text: '※別のページに移動' }
-        });
-    })
-    // otherページ
-app.get("/other", (req, res) => {
-    var name = req.query.name;
-    var pass = req.query.pass;
-    var msg = 'あなたの名前は「' + name +
-        '」<br>パスワードは「' + pass + '」です';
+    var msg = 'This is Express Page!<br>' +
+        '※メッセージを書いて送信してください';
     res.render('index.ejs', {
-        title: 'other',
+        title: 'Index',
         content: msg,
-        link: { href: '/', text: '※トップに戻る' }
+        data: data,
     });
 });
 //POST送信の処理
