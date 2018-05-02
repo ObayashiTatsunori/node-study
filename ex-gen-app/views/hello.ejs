@@ -11,11 +11,19 @@
                 <h1><%= title %></h1>
             </head>
             <dvi role="main">
-                <p><%- content %></p>
-                <form method="post" action="/hello/post">
-                    <input type="text" name="message">
-                    <input type="submit" value="送信">
-                </form>
+                <% if(content !=null){ %>
+                <ol>
+                    <% for(var i in content) { %>
+                    <% var obj = content[i]; %>
+                    <li>
+                        <a href="<%= obj.link %>">
+                            <%= obj.title %>
+                        </a>
+                    </li>
+             </tr> 
+            <% } %>
+            </ol>
+            <% } %>
             </dvi>
         </body>
 </html>
