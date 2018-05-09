@@ -54,5 +54,50 @@ router.get('/show', (req, res, next) => {
         });
     });
 });
+router.get('/edit', (req, res, next) => {
+    var id = req.query.id;
+    db.serialize(() => {
+        var q = "select * from mydata where id = ?";
+        db.get(q, [id], (err, row) => {
+            if (!err) {
+                var data = {
+                    title: 'hello/edit',
+                    content: 'id= ' + id + '　のレコードを編集',
+                    mydata: row
+                }
+                res.render('hello/edit', data);
+            }
+        });
+    });
+});
+router.post('/edit', (req, res, next) => {
+    var id = req.body.id;
+    var name = req.body.name;
+    var mail = req.body.mail;
+    var age = req.body.age;
+    var q = "update mydata set name = ? ,mail = ?,age=? where id =?";
+    db.run(q, name, mail, age, id);
+    res.redirect('/hello');
+});
+router.get('/delete', (req, res, next) => {
+    id = req.query.id;
+    db.serialize(() => {
+        var q = "select * from mydata where id = ?";
+        db.get(q, [id], (err, row) => {
+            var data = {
+                title: 'Hello/delete',
+                content: 'id= ' + id + ' のレコードを削除',
+                mydata: row
+            };
+            res.render('hello/delete', data);
+        });
+    });
+});
+router.post('/delete', (req, res, next) => {
+    var id = req.body.id;
+    var q = "delete from mydata where id = ?";
+    db.run(q, id);
+    res.redirect('/hello');
+});
 
 module.exports = router;
