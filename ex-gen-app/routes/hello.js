@@ -45,31 +45,9 @@ router.get('/add', (req, res, next) => {
 
 router.post('/add', (req, res, next) => {
     var response = res;
-    req.check('name', 'NAME　は必ず入力してください').notEmpty();
-    req.check('mail', 'MAIL はメールアドレスを入力してください').isEmail();
-    req.check('age', 'AGE は年齢（整数）を入力してください').isInt();
-    req.getValidationResult().then((result) => {
-        if (!result.isEmpty()) {
-            var res = '<ul class="error">';
-            var result_arr = result.array();
-            for (var n in result_arr) {
-                res += '<li>' + result_arr[n].msg + '</li>'
-            }
-            res += '</ul>';
-            var data = {
-                title: 'Hello/Add',
-                content: res,
-                form: req.body
-            }
-            response.render('hello/add', data);
-        } else {
-            var name = req.body.name;
-            var mail = req.body.mail;
-            var age = req.body.age;
-            db.run('insert into mydata (name,mail,age) values(?,?,?)', name, mail, age);
-            response.redirect('/hello');
-        }
-    })
+    new MyData(req.body).save().then((model) => {
+        response.redirect('/hello');
+    });
 });
 
 router.get('/show', (req, res, next) => {
@@ -134,5 +112,46 @@ router.post('/delete', (req, res, next) => {
     db.run(q, id);
     res.redirect('/hello');
 });
+router.get('/find', (req, res, next) => {
+    var data = {
+        title: '/Hello/Find',
+        content: '検索IDを入力：',
+        form: { fstr: '' },
+        mydata: null
+    };
+    res.render('hello/find', data);
+});
+router.post('/find', (req, res, next) => {
+    new MyData().where('id', '=', req.body.fstr).fetch().then((collection) => {
+        var data = {
+            title: 'Hello',
+            content: '※id = ' + req.body.fstr + ' の検索結果：',
+            form: req.body,
+            mydata: collection
+        };
+        res.render('hello/find', data);
+    });
+});
+
+Bookshelf.plugin('pagination');
+
+router.get('/:page', (req, res, next) => {
+    var pg = req.params.page;
+    pg *= 1;
+    if (pg < 1) { pg = 1; }
+    new MyData().fetchPage({ page: pg, pageSize: 3 }).then((collection) => {
+        var data = {
+            title: 'Hello!',
+            content: collection.toArray(),
+            pagination: collection.pagination
+        }
+        console.log(collection.pagination);
+        res.render('hello/index', data);
+    }).catch((err) => {
+        res.status(500).json({ error: true, data: { message: err.message } });
+    });
+});
+
+
 
 module.exports = router;
