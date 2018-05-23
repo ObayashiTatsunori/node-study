@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var validator = require('express-validator');
 
-var routes = require('./routes/index');
+var index = require('./routes/index');
 var users = require('./routes/users');
 var home = require('./routes/home');
 
@@ -34,8 +34,8 @@ var session_opt = {
 };
 app.use(session(session_opt));
 
-app.use('/', index);
 app.use('/users', users);
+app.use('/', index);
 app.use('/home', home);
 
 // catch 404 and forward to error handler
