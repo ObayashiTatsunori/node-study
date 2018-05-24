@@ -10,7 +10,7 @@ var knex = require('knex')({
 });
 
 var Bookshelf = require('bookshelf')(knex);
-
+Bookshelf.plugin('pagination');
 var User = Bookshelf.Model.extend({
     tableName: 'users'
 });
@@ -19,7 +19,7 @@ var Message = Bookshelf.Model.extend({
     tableName: 'messages',
     hasTimestamps: true,
     user: function() {
-        return this.belongTo(User);
+        return this.belongsTo(User);
     }
 });
 

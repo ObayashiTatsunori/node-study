@@ -9,8 +9,8 @@
             <%= val.attributes.message %>
         </td>
         <%
-        var d = new Data(val.attributes.created_at);
-        var dstr = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getData()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+        var d = new Date(val.attributes.created_at);
+        var dstr = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
         %>
     </tr>
     <% } %>
