@@ -1,9 +1,64 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+var markdown = require("markdown").markdown;
+
+var knex = require('knex')({
+    dialect: 'sqlite3',
+    connection: {
+        filename: 'mark_data.sqlite3'
+    },
+    useNullAsDefault: true
 });
+
+var Bookshelf = require('bookshelf')(knex);
+
+var User = Bookshelf.Model.extend({
+    tableName: 'users'
+});
+
+var Markdata = Bookshelf.Model.extend({
+    tableName: 'markdata',
+    hasTimestamps: true,
+    user: function() {
+        return this.belongTo(User);
+    }
+});
+
+router.get('/', (req, res, next) => {
+    if (req.session.login == null) {
+        res.redirect('/login');
+        return;
+    }
+    new Markdata(['title']).orderBy('created_at', 'DESC')
+        .where('user_id', '=', req.session.login.id)
+        .fetch({ page: 1, pageSize: 10, withRelated: ['user'] })
+        .then((collection) => {
+            var data = {
+                title: 'Markdown Search',
+                login: req.session.login,
+                message: '※最近の投稿データ',
+                form: { find: '' },
+                content: collection.toArray()
+            };
+            res.render('index', data);
+        });
+});
+
+router.post('/', (req, res, next) => {
+    new Markdata().orderBy('created_at', 'DESC')
+        .where('content', 'like', '%' + req.body.find + '%')
+        .fetchAll({ withRelated: ['user'] })
+        .then((collection) => {
+            var data = {
+                title: 'Markdown Search',
+                login: req.session.login,
+                message: '※"' + req.body.find + '"で検索された最近の投稿データ',
+                form: req.body,
+                content: collection.toArray()
+            }
+            req.render('index', data);
+        });
+})
 
 module.exports = router;
