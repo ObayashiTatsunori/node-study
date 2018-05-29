@@ -28,7 +28,7 @@ router.post('/', (req, res, next) => {
     var response = res;
     req.check('name', 'NAMEは必ず入力してください。').notEmpty();
     req.check('password', 'PAWWSORD は必ず入力してください').notEmpty();
-    req.getValidationResult.then((result) => {
+    req.getValidationResult().then((result) => {
         if (!result.isEmpty()) {
             var content = '<ul class="error">';
             var result_arr = result.array();
