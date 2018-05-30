@@ -12,7 +12,7 @@ var knex = require('knex')({
 var Bookshelf = require('bookshelf')(knex);
 
 var User = Bookshelf.Model.extend({
-    tableName: 'users'
+    tableName: 'user'
 });
 router.get('/', (req, res, next) => {
     var data = {
@@ -45,7 +45,7 @@ router.post('/', (req, res, next) => {
         } else {
             var nm = req.body.name;
             var pw = req.body.password;
-            User.query({ where: { name: nm }, andwhere: { password: pw } })
+            User.query({ where: { name: nm }, andWhere: { password: pw } })
                 .fetch()
                 .then((model) => {
                     if (model == null) {

@@ -16,7 +16,7 @@ var Bookshelf = require('bookshelf')(knex);
 Bookshelf.plugin('pagination');
 
 var User = Bookshelf.Model.extend({
-    tableName: 'users'
+    tableName: 'user'
 });
 
 var Markdata = Bookshelf.Model.extend({

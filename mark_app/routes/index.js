@@ -13,8 +13,9 @@ var knex = require('knex')({
 
 var Bookshelf = require('bookshelf')(knex);
 
+Bookshelf.plugin('pagination');
 var User = Bookshelf.Model.extend({
-    tableName: 'users'
+    tableName: 'user'
 });
 
 var Markdata = Bookshelf.Model.extend({
@@ -32,7 +33,7 @@ router.get('/', (req, res, next) => {
     }
     new Markdata(['title']).orderBy('created_at', 'DESC')
         .where('user_id', '=', req.session.login.id)
-        .fetch({ page: 1, pageSize: 10, withRelated: ['user'] })
+        .fetchPage({ page: 1, pageSize: 10, withRelated: ['user'] })
         .then((collection) => {
             var data = {
                 title: 'Markdown Search',

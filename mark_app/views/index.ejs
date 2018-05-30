@@ -24,11 +24,11 @@
         <%= message %>
     </p>
     <ul>
-        <% for(var i in content){ %>
-            <% if(content[i].attribute.user_id != login.id){cotinue;} %>
+        <% for(var i in content) { %>
+            <% if(content[i].attributes.user_id != login.id){cotinue;} %>
                 <li>
-                    <a href="/mark<%=content[i].id %>">
-                        <%=content[i].attribute.titile %>
+                    <a href="/mark/<%= content[i].id %>">
+                        <%= content[i].attributes.title %>
                     </a>
                 </li>
                 <% } %>
@@ -37,4 +37,4 @@
     <p><a href="/add">※データを登録</a></p>
 </body>
 
-</html>
+</html
