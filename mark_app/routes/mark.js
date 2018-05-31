@@ -39,7 +39,7 @@ router.get('/:id', (req, res, next) => {
         res.redirect('/login');
         return;
     }
-    Markdata.query({ where: { user_id: req.session.login.id }, andwhere: ({ id: req.params.id }) })
+    Markdata.query({ where: { user_id: req.session.login.id }, andWhere: { id: req.params.id } })
         .fetch()
         .then((model) => {
             markpage(request, response, model, true);
@@ -60,9 +60,9 @@ function markpage(req, res, model, flg) {
     var footer;
     if (flg) {
         var d1 = new Date(model.attributes.created_at);
-        var dstr = d1.getFullYear() + '-' + (d1.getMonth() + 1) + '-' + d1.getDate();
+        var dstr1 = d1.getFullYear() + '-' + (d1.getMonth() + 1) + '-' + d1.getDate();
         var d2 = new Date(model.attributes.created_at);
-        var dstr2 = d2.getFullYear() + '-' + (d2.getMonth() + 1) + '-' + h2.getDate();
+        var dstr2 = d2.getFullYear() + '-' + (d2.getMonth() + 1) + '-' + d2.getDate();
         footer = '(created_at: ' + dstr1 + ', updated: ' + dstr2 + +')';
     } else {
         footer = '(Updateing date and time information...'

@@ -22,7 +22,7 @@ var Markdata = Bookshelf.Model.extend({
     tableName: 'markdata',
     hasTimestamps: true,
     user: function() {
-        return this.belongTo(User);
+        return this.belongsTo(User);
     }
 });
 
@@ -43,7 +43,7 @@ router.get('/', (req, res, next) => {
                 content: collection.toArray()
             };
             res.render('index', data);
-        });
+        })
 });
 
 router.post('/', (req, res, next) => {

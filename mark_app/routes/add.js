@@ -41,7 +41,7 @@ router.post('/', (req, res, next) => {
         user_id: req.session.login.id
     }
     new Markdata(rec).save().then((model) => {
-        res.redirect()
-    })
-})
+        res.redirect('/');
+    });
+});
 module.exports = router;
